@@ -1,0 +1,24 @@
+# Ignore .env file
+.env
+
+# Ignore node_modules
+node_modules/
+
+test-ledger
+
+# Ignore log files
+*.log
+yarn-error.log
+
+# Ignore build output
+dist/
+build/
+
+# Ignore system files
+.DS_Store
+
+# Ignore other secrets
+*.key
+*.pem
+
+dev-wallet.json
