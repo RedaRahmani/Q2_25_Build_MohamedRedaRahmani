@@ -12,12 +12,12 @@ use crate::state::Config;
 pub struct Initialize<'info> {
     #[account(mut)]
     pub initializer: Signer<'info>,
-    pub mint_x: Account<'info>,
-    pub mint_y: Account<'info>,
+    pub mint_x: Account<'info , Mint>,
+    pub mint_y: Account<'info , Mint>,
     #[account(
         init,
         payer = initializer,
-        seeds = [b"lp", config.key.as_ref()],
+        seeds = [b"lp", config.key().as_ref()],
         bump,
         mint::decimals = 6,
         mint:: authority = config,
@@ -42,7 +42,7 @@ pub struct Initialize<'info> {
     #[account(
         init,
         payer = initializer,
-        seeds = [b"config", seed.le_le_bytes().as_ref()],
+        seeds = [b"config", seed.to_le_bytes().as_ref()],
         bump,
         space = 8 + Config::INIT_SPACE,
     )]
@@ -53,7 +53,7 @@ pub struct Initialize<'info> {
 }
 
 impl<'info> Initialize<'info> {
-    pub fn init(&mut self, seed: u64, fee: u18, authority:Option<Pubkey> , bumps: InitializeBumps) -> Result<()> {
+    pub fn init(&mut self, seed: u64, fee: u16, authority:Option<Pubkey> , bumps: InitializeBumps) -> Result<()> {
         
         self.config.set_inner(Config{
             seed,
